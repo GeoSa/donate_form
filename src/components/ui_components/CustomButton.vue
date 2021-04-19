@@ -2,6 +2,8 @@
   <button
     :class="isActive ? 'button-active' : 'button-not-active'"
     class="button"
+    v-bind:style="customStyle"
+    :disabled="isDisable"
     @click="onClick">
     {{symbol}} {{ value }}
   </button>
@@ -25,6 +27,17 @@ export default {
     onClick: {
       type: Function,
       required: true
+    },
+    customStyle: {
+      type: Object,
+      required: false,
+    }
+  },
+  computed: {
+    isDisable() {
+      if (this.symbol === 'Donate')
+        return this.$store.state.disableBtn;
+      return false;
     }
   }
 }
@@ -40,6 +53,10 @@ export default {
   height: 40px;
   font-size: 16px;
   border-radius: 5px;
+}
+
+.button:disabled {
+  opacity: 0.4;
 }
 
 .button-not-active {

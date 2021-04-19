@@ -14,7 +14,8 @@ export const store = new Vuex.Store({
         presets: [40, 100, 200, 1000, 2500, 5000],
         suggestion: 40,
         currentCurrency: "USD",
-        rate: 1
+        rate: 1,
+        disableBtn: false
     },
     mutations: {
         SET_SUGGESTION (state, payload) {
@@ -25,6 +26,9 @@ export const store = new Vuex.Store({
             let old_rate = state.rate;
             state.rate = state.curriencies.find(item => item.code === state.currentCurrency).rate;
             state.suggestion = getBeautifulNumber(state.suggestion, state.rate / old_rate);
+        },
+        SET_BTN_DISABLED (state, payload) {
+            state.disableBtn = payload;
         }
     },
     getters: {
@@ -48,8 +52,12 @@ function getBeautifulNumber(inputNumber, rate) {
     let value = (inputNumber * rate).toFixed(0);
     let round = value.length <= 2 ? 1 : 2;
     let decimals = 10 ** (value.length - round);
-    console.log((Number(value) / decimals).toFixed(0), decimals)
-    value = (Number(value) / decimals).toFixed(0) * decimals;
-    return value;
+    value = (Number(value) / decimals).toFixed(0);
+    if (value.length > 1 && Number(value) > 20) 
+        value = Number(value) - Number(value) % 5;
+    if (value.length > 1 && Number(value) < 20 && Number(value) % 5 > 0 && Number(value) % 3 > 0 ||
+            value.length == 1 && Number(value) > 4 && Number(value) % 5 > 0 && Number(value) % 3 > 0) 
+        value = Number(value) - Number(value) % 3;
+    return value * decimals;
 }
 

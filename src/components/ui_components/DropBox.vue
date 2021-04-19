@@ -29,5 +29,11 @@ export default {
 </script>
 
 <style scoped>
-
+select{
+  width: 65px;
+  height: 46px;
+  font-size: 16px;
+  font-weight: 600;
+  color: cadetblue;
+}
 </style>

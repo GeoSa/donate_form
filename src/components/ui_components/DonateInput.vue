@@ -1,21 +1,19 @@
 <template>
-  <form>
     <div class="input-icon input-icon-left">
-      <input type="number" v-model="SUGGESTION" v-on:input="SET_SUGGESTION($event.target.value)">
+      <input type="number" v-model="userInput" >
       <i>{{character}}</i>
       <div>
         <DropBox></DropBox>
       </div>
     </div>
-  </form>
 </template>
 
 <script>
 import DropBox from "@/components/ui_components/DropBox";
-import {mapMutations, mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "CustomInput",
+  name: "DonateInput",
   components: {
     DropBox
   },
@@ -25,18 +23,25 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['SUGGESTION'])
+    ...mapGetters(['SUGGESTION']),
+    userInput: {
+      get() {
+        return this.SUGGESTION;
+      },
+      set(value) {
+        let active = /^\d+$/.test(value) && Number(value) > 0;
+        this.$store.commit('SET_BTN_DISABLED', !active);
+        if (active) this.$store.commit('SET_SUGGESTION', value);
+      }
+    }
   },
-  methods: {
-    ...mapMutations(['SET_SUGGESTION'])
-  }
 }
 </script>
 
 <style scoped>
 .input-icon {
   position: relative;
-  width: 206px;
+  width: 370px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +53,7 @@ export default {
   transform: translate(0, -50%);
   top: 50%;
   pointer-events: none;
-  width: 25px;
+  width: 20px;
   text-align: center;
   font-style: normal;
 }
@@ -57,14 +62,19 @@ export default {
   display: block;
   transform: translate(0, -50%);
   top: 50%;
-  width: 40px;
+  width: 60px;
   text-align: center;
   font-style: normal;
 }
 
 .input-icon > input {
-  padding-left: 25px;
-  padding-right: 40px;
+  padding-left: 30px;
+  padding-right: 0px;
+  width: 350px;
+  height: 40px;
+  color: cornflowerblue;
+  font-size: 30px;
+  font-weight: 600;
 }
 
 .input-icon-left > i {
