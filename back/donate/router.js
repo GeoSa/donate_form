@@ -13,10 +13,16 @@ router.post('/donate', async (ctx) => {
         ctx.status = 400;
         ctx.body = {'error': 'Incorrect amount'};
     }
-    let response = await dbWriter(ctx.request.body);
-    console.log(response);
-    ctx.status = Number(response.status);
-    ctx.body = response.desc;
+
+    try {
+        let response = await dbWriter(ctx.request.body);
+        ctx.status = 201
+        ctx.body = response;
+    } catch (error) {
+        ctx.status = 503;
+        ctx.body = {'error': 'Server error'};
+    }
 });
+
 
 module.exports = router;

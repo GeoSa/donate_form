@@ -5,9 +5,9 @@ module.exports = async function(data) {
         currency: data.currency,
         amount: data.amount
     });
-    donate.save((err) => {
-        if (err) return {status: 400, desc: {notOk: 'DB error'}};
+    await donate.save((err) => {
+        if (err) throw new Error('DB save error');
     });
 
-    return {status: 201, desc: {'ok': true}};
+    return {'ok': true};
 }
