@@ -6,7 +6,7 @@
 ```npm run serve```
 
 ### Run koa back
-```cd front```
+```cd back```
 ```npm install```
 ```npm start```
 
